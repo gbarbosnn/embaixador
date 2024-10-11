@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  pg:
+    image: bitnami/postgresql:latest
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRESQL_USERNAME=docker  
+      - POSTGRESQL_PASSWORD=docker  
+      - POSTGRESQL_DATABASE=embaixadores 
+    volumes:
+      - embaixadores_pg_data:/bitnami/postgresql 
+
+  backup:
+    image: postgres:14
+    container_name: postgres_backup
+    depends_on:
+      - pg
+    volumes:
+      - ./backups:/backups  
+    environment:
+      - PGPASSWORD=docker
+    entrypoint: >
+      bash -c 'while true; do
+      pg_dump -U docker -h pg embaixadores > /backups/db_backup_$(date +%Y%m%d%H%M).sql;
+      sleep 86400;  # Backup diário (86400 segundos = 24 horas)
+      done'
+
+volumes:
+  embaixadores_pg_data:
+    driver: local 

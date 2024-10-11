@@ -1,0 +1,57 @@
+#Create account
+POST https://ambassador-jolimont.onrender.com/users
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "exemple@example.com",
+    "role": "member"
+}
+
+###
+#Update price tavble
+POST https://ambassador-jolimont.onrender.com/update-products
+
+###
+#Update price tavble
+GET  http://localhost:3333/products
+
+###
+#Create order
+POST http://localhost:3333/orders
+Content-Type: application/json
+
+{
+  "cliente": {
+    "email": "john@example.com",
+    "nome": "John Doe",
+    "telefone": "54999999999"
+  },
+  "enderecoEntrega": {
+    "bairro": "Centro",
+    "cep": "99999999",
+    "cidade": "Cidade",
+    "complemento": "Apto 101",
+    "endereco": "Rua das Flores",
+    "estado": "SP",
+    "nomeRecebedor": "John Doe",
+    "numero": "123"
+  },
+  "itens": [
+    {
+      "idProduto": "cm1z09s9c0002ispy62ij420r",
+      "qtde": 2,
+      "preco": 68
+    },
+    {
+      "idProduto": "cm1z09s9j0003ispycb597ih0",
+      "qtde": 1,
+      "preco": 38
+    }
+  ],
+  "pagamento": {
+    "metodo": "PIX",
+    "subtotal": 174.0,
+    "total": 120.0
+  }
+}

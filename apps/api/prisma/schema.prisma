@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id      String   @id @default(cuid())
+  email   String   @unique
+  name    String
+  role    Role     @default(USER)
+
+  pedidos Pedido[] 
+
+  @@map("users")
+}
+
+model Produto {
+  id       String   @id @default(cuid())
+  sku      String   @unique
+  blingId  String   @unique 
+
+  nome     String
+  linha    String
+
+  precoDeMercado Float
+  preco    Float
+  imagem   String
+  ativo          Boolean @default(true) 
+
+  itens    Item[] 
+  @@map("produtos")
+}
+
+model Pedido {
+  id       String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  clienteEmail     String
+  clienteNome      String
+  clienteTelefone  String
+
+  enderecoEntregaBairro          String
+  enderecoEntregaCep             String
+  enderecoEntregaCidade          String
+  enderecoEntregaComplemento     String?
+  enderecoEntregaEndereco        String
+  enderecoEntregaEstado          String
+  enderecoEntregaNomeRecebedor   String
+  enderecoEntregaNumero          String
+
+  pagamentoMetodo    String
+  pagamentoSubtotal  Float
+  pagamentoTotal     Float
+
+  status    String
+
+  itens    Item[]       
+  user     User?        @relation(fields: [userId], references: [id])
+  userId   String?      
+
+  @@map("pedidos")
+}
+
+model Item {
+  id        String   @id @default(cuid())
+  qtde      Int
+  preco     Float
+
+  pedido    Pedido   @relation(fields: [pedidoId], references: [id])
+  pedidoId  String
+
+  produto   Produto  @relation(fields: [produtoId], references: [id])
+  produtoId String
+
+  @@map("itens")
+}

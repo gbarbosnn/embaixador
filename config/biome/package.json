@@ -1,0 +1,11 @@
+{
+	"name": "@saas/biome",
+	"version": "0.0.0",
+	"private": true,
+	"files": [
+		"biome.json"
+	],
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.3"
+	}
+}
